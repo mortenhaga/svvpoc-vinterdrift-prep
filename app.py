@@ -11,7 +11,7 @@ storage_account_access_key = environ.get("AZURE_STORAGE_ACCESS_KEY").strip()
 from azure.storage.blob import BlockBlobService
 
 block_blob_service = BlockBlobService(account_name=storage_account_name, account_key=storage_account_access_key)
-generator = block_blob_service.list_blobs('vinterdriftsdata')
+generator = block_blob_service.list_blobs('vinterdatavictortest')
 filenames = []
 processed = []
 
