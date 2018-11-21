@@ -18,7 +18,7 @@ processed = []
 for blob in generator:
     if blob.name.startswith("processed_"):
         processed.append( blob.name.replace("processed_", "") )
-    else if blob.name.endswith(".csv"):
+    elif blob.name.endswith(".csv"):
         filenames.append(blob.name)
 
 print("Already processed:")
