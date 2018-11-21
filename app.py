@@ -62,13 +62,13 @@ from pyspark.sql.types import *
 filenamesToUpdate = []
 for file in filenames:
     print("Processing file: " + file)
-    df = spark.read.format("csv").options(header='true',inferschema='true',sep=",").load("wasbs://vinterdriftsdata@svvpocdlgen2.blob.core.windows.net/" + file)
+    df = spark.read.format("csv").options(header='true',inferschema='true',sep=",").load("wasbs://vinterdatavictortest@svvpocdlgen2.blob.core.windows.net/" + file)
     print(file + " has " + str(df.count()) + " rows.")
     
     df = df.withColumn('time', to_timestamp(from_unixtime(substring(col('time').cast(StringType()), 0, 10)), 'yyyy-MM-dd HH:mm:ss'))
 
     # write to db
-    df.write.jdbc(url=jdbcUrl, table="vinterdriftsdataOpenshift", mode="append", properties=connectionProperties)
+    df.write.jdbc(url=jdbcUrl, table="vinterdataOpenshift", mode="append", properties=connectionProperties)
     
     filenamesToUpdate.append("processed_" + file)
 
@@ -77,7 +77,7 @@ for file in filenames:
 # Create files for processed files
 for file in filenamesToUpdate:
     print("Will create new file: " + file)
-    block_blob_service.create_blob_from_text('vinterdriftsdata', file, 'dummy')
+    block_blob_service.create_blob_from_text('vinterdatavictortest', file, 'dummy')
 
 
 # Stop spark
