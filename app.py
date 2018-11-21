@@ -77,7 +77,7 @@ for file in filenames:
 # Create files for processed files
 for file in filenamesToUpdate:
     print("Will create new file: " + file)
-    block_blob_service.create_blob_from_text('trafikkdatavictortest', file, 'dummy')
+    block_blob_service.create_blob_from_text('vinterdriftsdata', file, 'dummy')
 
 
 # Stop spark
