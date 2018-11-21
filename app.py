@@ -68,7 +68,7 @@ for file in filenames:
     df = df.withColumn('time', to_timestamp(from_unixtime(substring(col('time').cast(StringType()), 0, 10)), 'yyyy-MM-dd HH:mm:ss'))
 
     # write to db
-    df.write.jdbc(url=jdbcUrl, table="vinterdriftsdatatest", mode="append", properties=connectionProperties)
+    df.write.jdbc(url=jdbcUrl, table="vinterdriftsdataOpenshift", mode="append", properties=connectionProperties)
     
     filenamesToUpdate.append("processed_" + file)
 
