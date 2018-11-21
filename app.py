@@ -38,7 +38,7 @@ for p in processed:
 # Create spark
 from pyspark.sql import SparkSession
 
-spark = SparkSession.builder.appName('vinter-prep-wrangler').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).master('spark://nbcluster:7077').getOrCreate()
+spark = SparkSession.builder.appName('vinter-prep-wrangler').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).getOrCreate()
 
 
 # DB Setup
