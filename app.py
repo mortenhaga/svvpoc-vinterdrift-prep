@@ -74,7 +74,7 @@ for file in filenames:
     # write to db
     df.write.jdbc(url=jdbcUrl, table="vinterdataOpenshift", mode="append", properties=connectionProperties)
     # Write dummy file
-    block_blob_service.create_blob_from_text('vinterdatavictortest', file, 'dummy')
+    block_blob_service.create_blob_from_text('vinterdatavictortest', "processed_" + file, 'dummy')
     
 
 
