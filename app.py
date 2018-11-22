@@ -64,7 +64,6 @@ from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
 # Read CSV and writo to DB
-filenamesToUpdate = []
 for file in filenames:
     print("Processing file: " + file)
     df = spark.read.format("csv").options(header='true',inferschema='true',sep=",").load("wasbs://vinterdatavictortest@svvpocdlgen2.blob.core.windows.net/" + file)
@@ -74,15 +73,12 @@ for file in filenames:
 
     # write to db
     df.write.jdbc(url=jdbcUrl, table="vinterdataOpenshift", mode="append", properties=connectionProperties)
-    
-    filenamesToUpdate.append("processed_" + file)
-
-
-
-# Create files for processed files
-for file in filenamesToUpdate:
-    print("Will create new file: " + file)
+    # Write dummy file
     block_blob_service.create_blob_from_text('vinterdatavictortest', file, 'dummy')
+    
+
+
+
 
 
 # Stop spark
