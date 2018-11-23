@@ -60,8 +60,10 @@ connectionProperties = {
   "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
 }
 
+import pandas as pd
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
+from geopy import distance
 
 # Read CSV and writo to DB
 for file in filenames:
@@ -70,9 +72,14 @@ for file in filenames:
     print(file + " has " + str(df.count()) + " rows.")
     
     df = df.withColumn('time', to_timestamp(from_unixtime(substring(col('time').cast(StringType()), 0, 10)), 'yyyy-MM-dd HH:mm:ss'))
-
+    
+    #calculate distance between geopoints
+    df = df.toPandas()
+    df['distancekm'] = df.apply(lambda x: distance.distance((x['startlat'], x['startlong']) , (x['endlat'], x['endlon'])).km, axis = 1)
+    df2 = spark.createDataFrame(df)
+    
     # write to db
-    df.write.jdbc(url=jdbcUrl, table="vinterdataOpenshift", mode="append", properties=connectionProperties)
+    df2.write.jdbc(url=jdbcUrl, table="vinterdataOpenshift", mode="append", properties=connectionProperties)
     # Write dummy file
     block_blob_service.create_blob_from_text('vinterdatavictortest', "processed_" + file, 'dummy')
     
